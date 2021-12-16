@@ -1,2 +1,2 @@
 # Qsniffer
-A GUI application for WLAN sniffer
+A GUI application for WLAN sniffer.
