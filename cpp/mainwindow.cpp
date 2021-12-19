@@ -31,3 +31,9 @@ void MainWindow::on_toolButton_clicked()
     ui->label->setText("scan");
 }
 
+
+void MainWindow::on_tableWidget_itemSelectionChanged()
+{
+
+}
+

@@ -1,0 +1,3 @@
+{
+    "files": ["scanner.py","../ui/main_window.ui","widget.py","pcaper.py"]
+}

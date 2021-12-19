@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QWidget, QLabel, QToolButton
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
-
+import python.wifiscanner as wifiscanner
 
 class Widget(QWidget):
     def __init__(self):
@@ -26,8 +26,8 @@ class Widget(QWidget):
     def btn_scan_onclick(self):
         self.label.setFixedWidth(128)
         self.label.setText("scan")
+        ap_list = wifiscanner.scan()
 
-        print(self.label.lineWidth())
 
     def btn_start_onclick(self):
         self.label.setText("start")
