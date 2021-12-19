@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
+    <width>826</width>
     <height>365</height>
    </rect>
   </property>
@@ -32,6 +32,9 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QTabWidget" name="tabWidget">
+            <property name="tabPosition">
+             <enum>QTabWidget::North</enum>
+            </property>
             <property name="tabShape">
              <enum>QTabWidget::Triangular</enum>
             </property>
@@ -63,6 +66,13 @@
                  <widget class="QToolButton" name="toolButton_3">
                   <property name="text">
                    <string>stop</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>labek</string>
                   </property>
                  </widget>
                 </item>
@@ -235,7 +245,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>623</width>
+     <width>826</width>
      <height>24</height>
     </rect>
    </property>

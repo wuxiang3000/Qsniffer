@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "capture_dialog.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -21,5 +21,13 @@ void MainWindow::on_pushButton_clicked()
 {
      //ui->listWidget->addItem("Netgear");
     //ui->tableWidget->row
+    QTableWidgetItem *trow = new QTableWidgetItem("Tplink");
+    ui->tableWidget->row(trow);
+}
+
+
+void MainWindow::on_toolButton_clicked()
+{
+    ui->label->setText("scan");
 }
 
