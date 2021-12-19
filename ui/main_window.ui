@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
+    <width>937</width>
     <height>373</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -170,10 +170,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox">
+          <widget class="QComboBox" name="cb_band">
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToContents</enum>
+           </property>
+           <property name="minimumContentsLength">
+            <number>4</number>
+           </property>
            <item>
             <property name="text">
-             <string>2G</string>
+             <string>2.4G</string>
             </property>
            </item>
            <item>
@@ -195,7 +201,7 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>400</width>
+             <width>300</width>
              <height>30</height>
             </size>
            </property>
@@ -244,7 +250,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="le_save_path"/>
          </item>
          <item>
           <widget class="QToolButton" name="btn_browser">
