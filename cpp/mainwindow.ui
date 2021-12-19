@@ -49,21 +49,21 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
-                 <widget class="QToolButton" name="toolButton">
+                 <widget class="QToolButton" name="btn_scan">
                   <property name="text">
                    <string>scan</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="toolButton_2">
+                 <widget class="QToolButton" name="btn_start">
                   <property name="text">
                    <string>start</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="toolButton_3">
+                 <widget class="QToolButton" name="btn_stop">
                   <property name="text">
                    <string>stop</string>
                   </property>

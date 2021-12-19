@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 
-from PySide6.QtWidgets import QApplication, QFrame
+from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QWidget, QLabel, QToolButton
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
@@ -14,9 +14,7 @@ class Widget(QWidget):
         super(Widget, self).__init__()
         self.load_ui()
         self.btn_scan = self.ui.findChild(QToolButton, "btn_scan")
-        print(self.btn_scan)
         self.btn_start = self.ui.findChild(QToolButton, "btn_start")
-        print(self.btn_start)
         self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
 
         self.label = QLabel(self.ui.findChild(QLabel, "label"))
@@ -41,7 +39,7 @@ class Widget(QWidget):
 
     def load_ui(self):
         loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / "form.ui")
+        path = os.fspath(Path(__file__).resolve().parent / "ui/main_window.ui")
         ui_file = QFile(path)
         ui_file.open(QFile.ReadOnly)
         self.ui = loader.load(ui_file, self)
