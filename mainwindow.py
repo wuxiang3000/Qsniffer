@@ -20,6 +20,7 @@ class MainWidget(QWidget):
         self.btn_scan = self.ui.findChild(QToolButton, "btn_scan")
         self.btn_start = self.ui.findChild(QToolButton, "btn_start")
         self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
+        self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
         self.cb_band = self.ui.findChild(QComboBox, "cb_band")
 
 
@@ -31,6 +32,9 @@ class MainWidget(QWidget):
         self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
         self.btn_start.setEnabled(False)
         self.btn_stop.setEnabled(False)
+
+        self.cb_iface.addItem("wlan0")
+        self.cb_iface.addItem("wlan1")
 
     def btn_scan_onclick(self):
         print("btn_scan_onclick")
