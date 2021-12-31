@@ -394,12 +394,12 @@
            <widget class="QComboBox" name="comboBox_2">
             <item>
              <property name="text">
-              <string>SSH</string>
+              <string>Local</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Local</string>
+              <string>SSH</string>
              </property>
             </item>
            </widget>
