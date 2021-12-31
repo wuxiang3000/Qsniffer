@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QVBoxLayout, QTableWidget, QToolButton, QComboBox
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
 from scanner import wifiscanner
+import logging
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -32,11 +33,13 @@ class MainWidget(QWidget):
         self.btn_stop.setEnabled(False)
 
     def btn_scan_onclick(self):
+        print("btn_scan_onclick")
         for row in range(self.table.rowCount()):
             self.table.removeRow(0)
         mScanner = wifiscanner()
         self.btn_scan.setEnabled(False)
         ap_list = mScanner.do_scan(self.cb_band.currentText())
+        print(ap_list)
         for ap in ap_list:
             self.table.insertRow(self.table.rowCount())
             column = 0

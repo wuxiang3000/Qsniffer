@@ -10,7 +10,7 @@ class wifiscanner:
                    "Netgear-5G\t22:22:33:44:55:66:77\t5G\t40\t80\t-32Dbm\t5220"]
         return_list = []
         for ap in ap_list:
-            if ap.split("\t")[2] != band:
+            if band != "Full" and ap.split("\t")[2] != band:
                 continue
             return_list.append(ap)
         return return_list
