@@ -12,3 +12,4 @@ CTestTestfile.cmake
 _deps
 .DS_Store
 *.pyproject.user
+__pycache__/scanner.cpython-39.pyc
