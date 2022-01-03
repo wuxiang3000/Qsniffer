@@ -6,8 +6,8 @@ class wifiscanner:
         pass
 
     def do_scan(self, band):
-        ap_list = ["Netgear97\t11:22:33:44:55:66:77\t2.4G\t20\t1\t2412\t-35Dbm",
-                   "Netgear-5G\t22:22:33:44:55:66:77\t5G\t40\t80\t-32Dbm\t5220"]
+        ap_list = ["Netgear97\twifi4\t11:22:33:44:55:66:77\t2.4G\t-23Dbm\t1\t20\t2412",
+                   "Netgear-5G\twifi5\t22:22:33:44:55:66:77\t5G\t-36Dbm\t36\t80\t5210\t-32Dbm"]
         return_list = []
         for ap in ap_list:
             if band != "Full" and ap.split("\t")[2] != band:

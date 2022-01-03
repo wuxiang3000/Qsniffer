@@ -83,6 +83,11 @@
             </column>
             <column>
              <property name="text">
+              <string>Type</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>MAC</string>
              </property>
             </column>
@@ -93,7 +98,7 @@
             </column>
             <column>
              <property name="text">
-              <string>BandWidth</string>
+              <string>RSSI</string>
              </property>
             </column>
             <column>
@@ -103,12 +108,12 @@
             </column>
             <column>
              <property name="text">
-              <string>Center Freq</string>
+              <string>BandWidth</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>Type</string>
+              <string>Center Freq</string>
              </property>
             </column>
            </widget>
