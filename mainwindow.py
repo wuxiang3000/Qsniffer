@@ -5,6 +5,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QTableWidgetItem
 from PySide6.QtWidgets import QVBoxLayout, QTableWidget, QToolButton, QComboBox
+from PySide6.QtWidgets import QLineEdit
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
 from interface import wifiInterface
@@ -14,21 +15,26 @@ import logging
 class MainWidget(QWidget):
     def __init__(self):
         QWidget.__init__(self)
+        self.lineEdit_passwd = None
+        self.lineEdit_IP = None
+        self.cb_band = None
+        self.cb_iface = None
+        self.btn_stop = None
+        self.btn_start = None
+        self.btn_scan = None
+        self.table = None
         self.ui = None
         self.load_ui()
-        self.wifiInterface = wifiInterface()
         self.initGuiComponents()
-
-        self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
-
+        self.wifiInterface = wifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
+        self.updateGuiComponents()
 
     def btn_scan_onclick(self):
         print("btn_scan_onclick")
         for row in range(self.table.rowCount()):
             self.table.removeRow(0)
-        wifi_interface = wifiInterface()
         self.btn_scan.setEnabled(False)
-        ap_list = self.wifiInterface.do_scan(self.cb_band.currentText())
+        ap_list = self.wifiInterface.do_scan(self.cb_band.currentText(), self.cb_iface.currentText())
         print(ap_list)
         for ap in ap_list:
             self.table.insertRow(self.table.rowCount())
@@ -79,6 +85,8 @@ class MainWidget(QWidget):
         self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
         self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
         self.cb_band = self.ui.findChild(QComboBox, "cb_band")
+        self.lineEdit_IP = QLineEdit(self.ui.findChild(QLineEdit, 'lineEdit_IP'))
+        self.lineEdit_passwd = QLineEdit(self.ui.findChild(QLineEdit, 'lineEdit_passwd'))
         # Hook Signals
         self.btn_scan.clicked.connect(self.btn_scan_onclick)
         self.btn_start.clicked.connect(self.btn_start_onclick)
@@ -87,9 +95,14 @@ class MainWidget(QWidget):
         # Set initial state
         self.btn_start.setEnabled(False)
         self.btn_stop.setEnabled(False)
+        self.lineEdit_IP.setText("192.168.3.149")
+        self.lineEdit_passwd.setText("password")
+        self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
+
+    def updateGuiComponents(self):
         for ifaceName in self.wifiInterface.getIfaceNames():
             self.cb_iface.addItem(ifaceName)
-
+        print(self.cb_iface.currentText())
 
 class MainWindow(QMainWindow):
     def __init__(self):
