@@ -70,6 +70,9 @@
           </item>
           <item>
            <widget class="QTableWidget" name="tableWidget">
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
             <property name="selectionMode">
              <enum>QAbstractItemView::SingleSelection</enum>
             </property>
@@ -113,7 +116,12 @@
             </column>
             <column>
              <property name="text">
-              <string>Center Freq</string>
+              <string>Center S1</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Center S2</string>
              </property>
             </column>
            </widget>
@@ -168,6 +176,11 @@
               <height>16777215</height>
              </size>
             </property>
+            <item>
+             <property name="text">
+              <string>NA</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
@@ -227,7 +240,7 @@
             </item>
             <item>
              <property name="text">
-              <string>2.4G</string>
+              <string>2G</string>
              </property>
             </item>
             <item>
@@ -399,12 +412,17 @@
            <widget class="QComboBox" name="comboBox_2">
             <item>
              <property name="text">
+              <string>SSH</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>Local</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>SSH</string>
+              <string>ADB</string>
              </property>
             </item>
            </widget>
@@ -448,14 +466,14 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>192.168.3.149</string>
+             <string>127.0.0.1</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="toolButton">
+           <widget class="QToolButton" name="btn_connect">
             <property name="text">
-             <string>Verify</string>
+             <string>Connect</string>
             </property>
            </widget>
           </item>
@@ -548,7 +566,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

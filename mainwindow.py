@@ -15,6 +15,8 @@ import logging
 class MainWidget(QWidget):
     def __init__(self):
         QWidget.__init__(self)
+        self.wifiInterface = None
+        self.btn_connect = None
         self.lineEdit_passwd = None
         self.lineEdit_IP = None
         self.cb_band = None
@@ -26,7 +28,6 @@ class MainWidget(QWidget):
         self.ui = None
         self.load_ui()
         self.initGuiComponents()
-        self.wifiInterface = wifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
         self.updateGuiComponents()
 
     def btn_scan_onclick(self):
@@ -35,7 +36,6 @@ class MainWidget(QWidget):
             self.table.removeRow(0)
         self.btn_scan.setEnabled(False)
         ap_list = self.wifiInterface.do_scan(self.cb_band.currentText(), self.cb_iface.currentText())
-        print(ap_list)
         for ap in ap_list:
             self.table.insertRow(self.table.rowCount())
             column = 0
@@ -43,6 +43,7 @@ class MainWidget(QWidget):
                 item = QTableWidgetItem(attr)
                 self.table.setItem(self.table.rowCount()-1, column, item)
                 column += 1
+        self.table.resizeColumnsToContents()
         self.btn_start.setEnabled(False)
         self.btn_scan.setEnabled(True)
 
@@ -66,6 +67,15 @@ class MainWidget(QWidget):
         self.btn_start.setEnabled(True)
         self.btn_stop.setEnabled(False)
 
+    def btn_connect_onclick(self):
+        self.btn_connect.setEnabled(False)
+        print("btn_connect onclick")
+        self.wifiInterface = wifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
+        if self.wifiInterface.ssh_connected is True:
+            self.btn_scan.setEnabled(True)
+            self.updateGuiComponents()
+        self.btn_connect.setEnabled(True)
+
     def table_on_select_changed(self):
         self.btn_start.setEnabled(True)
 
@@ -83,6 +93,7 @@ class MainWidget(QWidget):
         self.btn_scan = self.ui.findChild(QToolButton, "btn_scan")
         self.btn_start = self.ui.findChild(QToolButton, "btn_start")
         self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
+        self.btn_connect = self.ui.findChild(QToolButton, "btn_connect")
         self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
         self.cb_band = self.ui.findChild(QComboBox, "cb_band")
         self.lineEdit_IP = QLineEdit(self.ui.findChild(QLineEdit, 'lineEdit_IP'))
@@ -91,18 +102,20 @@ class MainWidget(QWidget):
         self.btn_scan.clicked.connect(self.btn_scan_onclick)
         self.btn_start.clicked.connect(self.btn_start_onclick)
         self.btn_stop.clicked.connect(self.btn_stop_onclick)
+        self.btn_connect.clicked.connect(self.btn_connect_onclick)
         self.table.itemSelectionChanged.connect(self.table_on_select_changed)
         # Set initial state
+        self.btn_scan.setEnabled(False)
         self.btn_start.setEnabled(False)
         self.btn_stop.setEnabled(False)
-        self.lineEdit_IP.setText("192.168.3.149")
+        self.lineEdit_IP.setText("127.0.0.1")
         self.lineEdit_passwd.setText("password")
         self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
 
     def updateGuiComponents(self):
-        for ifaceName in self.wifiInterface.getIfaceNames():
-            self.cb_iface.addItem(ifaceName)
-        print(self.cb_iface.currentText())
+        if self.wifiInterface and self.wifiInterface.ssh_connected is True:
+            for ifaceName in self.wifiInterface.getIfaceNames():
+                self.cb_iface.addItem(ifaceName)
 
 class MainWindow(QMainWindow):
     def __init__(self):
