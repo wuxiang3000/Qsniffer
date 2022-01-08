@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QTableWidgetIt
 from PySide6.QtWidgets import QVBoxLayout, QTableWidget, QToolButton, QComboBox
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
-from scanner import wifiscanner
+from interface import wifiInterface
 from pcaper import pcaper
 import logging
 
@@ -16,33 +16,19 @@ class MainWidget(QWidget):
         QWidget.__init__(self)
         self.ui = None
         self.load_ui()
-
-        self.table = self.ui.findChild(QTableWidget, "tableWidget")
-        self.btn_scan = self.ui.findChild(QToolButton, "btn_scan")
-        self.btn_start = self.ui.findChild(QToolButton, "btn_start")
-        self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
-        self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
-        self.cb_band = self.ui.findChild(QComboBox, "cb_band")
-
-        self.btn_scan.clicked.connect(self.btn_scan_onclick)
-        self.btn_start.clicked.connect(self.btn_start_onclick)
-        self.btn_stop.clicked.connect(self.btn_stop_onclick)
-        self.table.itemSelectionChanged.connect(self.table_on_select_changed)
+        self.wifiInterface = wifiInterface()
+        self.initGuiComponents()
 
         self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
-        self.btn_start.setEnabled(False)
-        self.btn_stop.setEnabled(False)
 
-        self.cb_iface.addItem("wlan0")
-        self.cb_iface.addItem("wlan1")
 
     def btn_scan_onclick(self):
         print("btn_scan_onclick")
         for row in range(self.table.rowCount()):
             self.table.removeRow(0)
-        mScanner = wifiscanner()
+        wifi_interface = wifiInterface()
         self.btn_scan.setEnabled(False)
-        ap_list = mScanner.do_scan(self.cb_band.currentText())
+        ap_list = self.wifiInterface.do_scan(self.cb_band.currentText())
         print(ap_list)
         for ap in ap_list:
             self.table.insertRow(self.table.rowCount())
@@ -84,6 +70,25 @@ class MainWidget(QWidget):
         ui_file.open(QFile.ReadOnly)
         self.ui = loader.load(ui_file, self)
         ui_file.close()
+
+    def initGuiComponents(self):
+        # Find components
+        self.table = self.ui.findChild(QTableWidget, "tableWidget")
+        self.btn_scan = self.ui.findChild(QToolButton, "btn_scan")
+        self.btn_start = self.ui.findChild(QToolButton, "btn_start")
+        self.btn_stop = self.ui.findChild(QToolButton, "btn_stop")
+        self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
+        self.cb_band = self.ui.findChild(QComboBox, "cb_band")
+        # Hook Signals
+        self.btn_scan.clicked.connect(self.btn_scan_onclick)
+        self.btn_start.clicked.connect(self.btn_start_onclick)
+        self.btn_stop.clicked.connect(self.btn_stop_onclick)
+        self.table.itemSelectionChanged.connect(self.table_on_select_changed)
+        # Set initial state
+        self.btn_start.setEnabled(False)
+        self.btn_stop.setEnabled(False)
+        for ifaceName in self.wifiInterface.getIfaceNames():
+            self.cb_iface.addItem(ifaceName)
 
 
 class MainWindow(QMainWindow):

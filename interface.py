@@ -1,9 +1,11 @@
 # This Python file uses the following encoding: utf-8
 
 
-class wifiscanner:
+class wifiInterface:
     def __init__(self):
         pass
+    def getIfaceNames(self):
+        return ["wlan0", "wlan1"]
 
     def do_scan(self, band):
         ap_list = ["Netgear97\twifi4\t11:22:33:44:55:66:77\t2.4G\t-23Dbm\t1\t20\t2412",
