@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QVBoxLayout, QTableWidget, QToolButton, QComboBox
 from PySide6.QtWidgets import QLineEdit
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
-from interface import wifiInterface
+from interface import WifiInterface
 from pcaper import pcaper
 import logging
 
@@ -70,7 +70,7 @@ class MainWidget(QWidget):
     def btn_connect_onclick(self):
         self.btn_connect.setEnabled(False)
         print("btn_connect onclick")
-        self.wifiInterface = wifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
+        self.wifiInterface = WifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
         if self.wifiInterface.ssh_connected is True:
             self.btn_scan.setEnabled(True)
             self.updateGuiComponents()

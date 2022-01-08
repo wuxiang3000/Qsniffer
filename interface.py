@@ -8,7 +8,8 @@ import logging
 import re
 import jc.parsers.iw_scan
 
-class wifiInterface:
+
+class WifiInterface:
     def __init__(self, host_ip, root_password):
         self.ip = host_ip
         self.ssh = SSHClient()
@@ -69,7 +70,6 @@ class wifiInterface:
                 # [3] is BSSID
                 buffer += ap['bssid'] + '\t'
                 # [4] is Band
-                logging.error("band:%s, freq:%s" %(band, ap['freq']))
                 if 'freq' in ap.keys():
                     if 2412 <= ap['freq'] <= 2484 and (band == '2G' or band == 'Full'):
                         buffer += '2G\t'
@@ -78,7 +78,7 @@ class wifiInterface:
                     elif 5955 <= ap['freq'] <= 7117 and (band == '6G' or band == 'Full'):
                         buffer += '6G\t'
                     else:
-                        logging.error("No matching AP by selected band:%s, freq:%s" %(band, ap['freq']))
+                        logging.info("No matching AP by selected band:%s, freq:%s" %(band, ap['freq']))
                         continue
                 else:
                     logging.error("No freq info of AP:", ap['ssid'])
