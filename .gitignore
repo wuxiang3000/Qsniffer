@@ -13,3 +13,5 @@ _deps
 .DS_Store
 *.pyproject.user
 __pycache__
+.idea/Qsniffer.iml
+.idea/misc.xml

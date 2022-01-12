@@ -1,7 +1,8 @@
 # This Python file uses the following encoding: utf-8
 import json
+import os
 import socket
-
+import subprocess
 from paramiko import ssh_exception
 from paramiko import SSHClient, AutoAddPolicy
 import logging
@@ -10,32 +11,45 @@ import jc.parsers.iw_scan
 
 
 class WifiInterface:
-    def __init__(self, host_ip, root_password):
-        self.ip = host_ip
-        self.ssh = SSHClient()
-        self.ssh.set_missing_host_key_policy(AutoAddPolicy())
-        try:
-            print("try to connect to ", host_ip, " with password:", root_password)
-            self.ssh.connect(hostname=self.ip, port=22, username=b'root', password=root_password, timeout=10)
-        except (ssh_exception.NoValidConnectionsError,ssh_exception.AuthenticationException,socket.timeout):
-            logging.error("ssh connect error")
-            self.ssh_connected = False
-            return None
-        else:
-            self.ssh_connected = True
+    def __init__(self, cmd_pipe, host_ip, root_password):
+        self.command_pipe = cmd_pipe
+        self.command_pipe_connected = False
 
-        stdin, stdout, stderr = self.ssh.exec_command('uname -a')
-        print(stdout.read().decode())
-        print(self.ip)
-        pass
+        if cmd_pipe == "SSH":
+            self.ip = host_ip
+            self.ssh = SSHClient()
+            self.ssh.set_missing_host_key_policy(AutoAddPolicy())
+            try:
+                print("try to connect to ", host_ip, " with password:", root_password)
+                self.ssh.connect(hostname=self.ip, port=22, username=b'root', password=root_password, timeout=10)
+            except (ssh_exception.NoValidConnectionsError,ssh_exception.AuthenticationException,socket.timeout):
+                logging.error("ssh connect error")
+                self.command_pipe_connected = False
+                return None
+            else:
+                self.command_pipe_connected = True
+                stdin, stdout, stderr = self.ssh.exec_command('uname -a')
+                print(stdout.read().decode())
+                print(self.ip)
+        elif cmd_pipe == 'ADB':
+            self.command_pipe_connected = True
+            pass
+
+    def do_command(self, command):
+        if self.command_pipe == 'ADB':
+            final_cmd = r'adb shell "' + command + '"'
+            proc = subprocess.Popen(final_cmd, stdout=subprocess.PIPE, shell=True)
+            stdout, stderr = proc.communicate()
+            return stdout.decode()
+
 
     def getIfaceNames(self):
         logging.info("try to get wireless device names")
-        if self.ssh_connected is not True:
+        if self.command_pipe_connected is not True:
             return ["NA"]
-        stdin, stdout, stderr = self.ssh.exec_command('iw dev | grep Interface')
-        command_result = stdout.read().decode()
-        command_result = command_result.replace('Interface', '').strip().split()
+        stdout = self.do_command('iw dev | grep Interface')
+        command_result = stdout.replace('Interface', '').strip().split()
+        print(command_result)
         command_result.sort()
         print(command_result)
         return command_result
@@ -44,15 +58,9 @@ class WifiInterface:
         band_to_string = ['NA', '2.4G', '5G', '6G']
         ap_list = []
         print('selected band:', band)
-        if iface_name != "NA":
-            command = "iw " + iface_name + " scan"
-            print(command)
-            stdin, stdout, stderr = self.ssh.exec_command(command)
-            scan_result = json.loads(stdout.read().decode())
-        else:
-            with open("scan_result.txt.bak", 'r') as file:
-                lines = file.read()
-            scan_result = jc.parsers.iw_scan.parse(lines)
+        result = self.do_command('iw ' + iface_name +' scan')
+        scan_result = jc.parsers.iw_scan.parse(result)
+        print(scan_result)
         scan_result_sorted = sorted(scan_result, key=lambda d: d['signal_dbm'], reverse=True)
         # with open('scan_result.json', 'w') as file:
         #     json.dump(scan_result_sorted, file, indent=4)
@@ -109,4 +117,5 @@ class WifiInterface:
         return return_list
 
 if __name__ == "__main__":
-    wifiInterface().do_scan("Full", "wlan0")
+    wifi_interface = WifiInterface("ADB", None, None)
+    wifi_interface.do_scan('2G', 'wlan0')

@@ -21,6 +21,7 @@ class MainWidget(QWidget):
         self.lineEdit_IP = None
         self.cb_band = None
         self.cb_iface = None
+        self.cb_cmd_pipe = None
         self.btn_stop = None
         self.btn_start = None
         self.btn_scan = None
@@ -70,8 +71,8 @@ class MainWidget(QWidget):
     def btn_connect_onclick(self):
         self.btn_connect.setEnabled(False)
         print("btn_connect onclick")
-        self.wifiInterface = WifiInterface(self.lineEdit_IP.text(), self.lineEdit_passwd.text())
-        if self.wifiInterface.ssh_connected is True:
+        self.wifiInterface = WifiInterface(self.cb_cmd_pipe.currentText(), self.lineEdit_IP.text(), self.lineEdit_passwd.text())
+        if self.wifiInterface.command_pipe_connected is True:
             self.btn_scan.setEnabled(True)
             self.updateGuiComponents()
         self.btn_connect.setEnabled(True)
@@ -96,6 +97,7 @@ class MainWidget(QWidget):
         self.btn_connect = self.ui.findChild(QToolButton, "btn_connect")
         self.cb_iface = self.ui.findChild(QComboBox, "cb_iface")
         self.cb_band = self.ui.findChild(QComboBox, "cb_band")
+        self.cb_cmd_pipe = self.ui.findChild(QComboBox, 'cb_cmdpipe')
         self.lineEdit_IP = QLineEdit(self.ui.findChild(QLineEdit, 'lineEdit_IP'))
         self.lineEdit_passwd = QLineEdit(self.ui.findChild(QLineEdit, 'lineEdit_passwd'))
         # Hook Signals
@@ -113,7 +115,7 @@ class MainWidget(QWidget):
         self.setLayout(self.ui.findChild(QVBoxLayout, "verticalLayout"))
 
     def updateGuiComponents(self):
-        if self.wifiInterface and self.wifiInterface.ssh_connected is True:
+        if self.wifiInterface and self.wifiInterface.command_pipe_connected is True:
             for ifaceName in self.wifiInterface.getIfaceNames():
                 self.cb_iface.addItem(ifaceName)
 
